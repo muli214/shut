@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>שאלות ותשובות הלכתיות</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg-color: #f9f9f9;
+      --card-bg: #ffffff;
+      --border: #e0e0e0;
+      --accent: #007aff;
+      --text: #1c1c1e;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: var(--bg-color);
+      color: var(--text);
+    }
+    header {
+      background: var(--accent);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 1rem;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .qa-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease;
+    }
+    .qa-card:hover {
+      transform: scale(1.01);
+    }
+    .question {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .answer {
+      padding-right: 10px;
+      color: #333;
+    }
+    .meta {
+      font-size: 0.8rem;
+      color: #666;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <header>שאלות ותשובות הלכתיות</header>
+
+  <div class="container">
+    <input type="text" id="searchInput" onkeyup="filterQA()" placeholder="חפש שאלה או תשובה...">
+    <div id="qaList"></div>
+  </div>
+
+  <script>
+    // Load data from Flask route /data/qa_pairs.json
+    async function loadQAData() {
+      const response = await fetch("/data/qa_pairs.json");
+      const data = await response.json();
+      const container = document.getElementById("qaList");
+
+      data.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "qa-card";
+
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        meta.innerText = `נשאל על ידי ${item["שואל"]} בתאריך ${item["זמן שאלה"]}`;
+
+        const question = document.createElement("div");
+        question.className = "question";
+        question.innerText = item["שאלה"];
+
+        const answer = document.createElement("div");
+        answer.className = "answer";
+        answer.innerText = item["תשובה"];
+
+        card.appendChild(meta);
+        card.appendChild(question);
+        card.appendChild(answer);
+        container.appendChild(card);
+      });
+    }
+
+    function filterQA() {
+      var input = document.getElementById("searchInput");
+      var filter = input.value.toLowerCase();
+      var cards = document.getElementsByClassName("qa-card");
+
+      for (var i = 0; i < cards.length; i++) {
+        var text = cards[i].textContent || cards[i].innerText;
+        cards[i].style.display = text.toLowerCase().includes(filter) ? "" : "none";
+      }
+    }
+
+    // Load data on page load
+    loadQAData();
+  </script>
+</body>
+</html>
