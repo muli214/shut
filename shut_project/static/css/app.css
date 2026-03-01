@@ -1,0 +1,259 @@
+:root {
+  --bg: #f4f1ea;
+  --panel: #fffdf8;
+  --panel-strong: #fff8ed;
+  --line: #d9cdbb;
+  --accent: #74451d;
+  --accent-soft: #efe1cc;
+  --text: #201915;
+  --muted: #6a6055;
+  --danger: #8f2d2d;
+  --warning: #8a5a00;
+  --ok: #2b6b4b;
+  --shadow: 0 12px 30px rgba(53, 37, 20, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Noto Sans Hebrew", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top right, #fbf7f0, var(--bg) 50%),
+    linear-gradient(180deg, #f8f2e8 0%, #f3ede5 100%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.5rem 1.25rem;
+  background: linear-gradient(135deg, #5f3817, var(--accent));
+  color: #fff;
+  box-shadow: var(--shadow);
+}
+
+.site-header h1,
+.site-header p {
+  margin: 0;
+}
+
+.site-header p {
+  margin-top: 0.3rem;
+  opacity: 0.88;
+}
+
+.site-nav {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.site-nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+}
+
+.page-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+.panel {
+  background: rgba(255, 253, 248, 0.9);
+  border: 1px solid rgba(217, 205, 187, 0.85);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(8px);
+}
+
+.panel h2,
+.panel h3,
+.panel p {
+  margin-top: 0;
+}
+
+.narrow {
+  max-width: 520px;
+}
+
+.row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.split {
+  justify-content: space-between;
+}
+
+.actions {
+  margin-top: 0.75rem;
+}
+
+.textarea,
+.input,
+.select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+  font: inherit;
+  background: #fff;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.textarea.compact {
+  min-height: 84px;
+}
+
+.button {
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #603917, var(--accent));
+  color: #fff;
+  font: inherit;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}
+
+.button-secondary {
+  background: #f2e7d8;
+  color: var(--text);
+}
+
+.status {
+  color: var(--muted);
+  margin-top: 0.75rem;
+}
+
+.status.warning {
+  color: var(--warning);
+}
+
+.status.error {
+  color: var(--danger);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  background: var(--accent-soft);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.92rem;
+}
+
+.records-list {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.record-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 0.95rem;
+  background: #fffefb;
+}
+
+.record-card.review {
+  border-color: rgba(143, 45, 45, 0.35);
+  background: #fff9f7;
+}
+
+.record-card .meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.record-card .question {
+  font-weight: 700;
+  margin-bottom: 0.45rem;
+}
+
+.record-card .answer {
+  border-right: 3px solid var(--accent-soft);
+  padding-right: 0.75rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.65rem 0;
+}
+
+.flag {
+  border-radius: 999px;
+  padding: 0.28rem 0.65rem;
+  font-size: 0.85rem;
+  background: #f5eee3;
+}
+
+.flag.warning {
+  background: #fff0d4;
+}
+
+.flag.danger {
+  background: #ffe0df;
+}
+
+.thread {
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--line);
+}
+
+.thread-item {
+  padding: 0.4rem 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.review-editor {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 700px) {
+  .site-header,
+  .row.split {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

@@ -6,63 +6,190 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
-      --bg-color: #f9f9f9;
+      --bg-color: #f4f1ea;
       --card-bg: #ffffff;
-      --border: #e0e0e0;
-      --accent: #007aff;
-      --text: #1c1c1e;
+      --border: #ddd4c6;
+      --accent: #8a5a2b;
+      --accent-soft: #efe5d8;
+      --text: #1f1a17;
+      --muted: #6a6258;
+      --shadow: 0 10px 30px rgba(74, 52, 27, 0.08);
     }
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: "Noto Sans Hebrew", "Segoe UI", sans-serif;
       margin: 0;
-      background-color: var(--bg-color);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top, #fbf8f2 0%, var(--bg-color) 55%),
+        linear-gradient(180deg, #f8f3eb 0%, #f1ece4 100%);
       color: var(--text);
     }
     header {
-      background: var(--accent);
-      color: white;
-      padding: 1rem;
+      background: linear-gradient(135deg, #6c431d 0%, var(--accent) 100%);
+      color: #fff;
+      padding: 1.25rem 1rem;
       text-align: center;
-      font-size: 1.5rem;
-      letter-spacing: 1px;
+      font-size: 1.6rem;
+      letter-spacing: 0.5px;
+      box-shadow: var(--shadow);
     }
     .container {
       max-width: 900px;
-      margin: auto;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+    .search-panel {
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(221, 212, 198, 0.85);
+      border-radius: 18px;
       padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+    .search-label {
+      display: block;
+      margin-bottom: 0.65rem;
+      font-weight: 700;
     }
     input[type="text"] {
       width: 100%;
-      padding: 10px;
+      box-sizing: border-box;
+      padding: 0.9rem 1rem;
       font-size: 1rem;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 20px;
+      border-radius: 12px;
+      background: #fffdf9;
+    }
+    input[type="text"]:focus {
+      outline: 2px solid rgba(138, 90, 43, 0.18);
+      border-color: var(--accent);
+    }
+    .results-count,
+    .status-message {
+      color: var(--muted);
+      margin: 0.75rem 0 1rem;
+    }
+    .tool-panel {
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(221, 212, 198, 0.85);
+      border-radius: 18px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.9rem;
+    }
+    textarea,
+    input[type="file"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.9rem 1rem;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fffdf9;
+      font-family: inherit;
+    }
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .panel-title {
+      margin: 0 0 0.65rem;
+      font-size: 1.05rem;
+    }
+    .panel-note {
+      margin: 0 0 0.75rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-top: 0.75rem;
+    }
+    button {
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #6c431d 0%, var(--accent) 100%);
+      color: #fff;
+      padding: 0.8rem 1.1rem;
+      font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+    button:disabled {
+      opacity: 0.65;
+      cursor: wait;
+    }
+    .match-result {
+      margin-top: 1rem;
+      background: #fffaf2;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 0.95rem;
+    }
+    .match-result strong {
+      display: inline-block;
+      min-width: 8.5rem;
     }
     .qa-card {
       background-color: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      transition: transform 0.2s ease;
+      border-radius: 18px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 0.95rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .qa-card:hover {
-      transform: scale(1.01);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(74, 52, 27, 0.12);
     }
     .question {
       font-weight: bold;
-      margin-bottom: 8px;
+      margin-bottom: 0.6rem;
+      font-size: 1.05rem;
     }
     .answer {
-      padding-right: 10px;
-      color: #333;
+      padding-right: 0.75rem;
+      color: #2f2a25;
+      border-right: 3px solid var(--accent-soft);
+      line-height: 1.65;
     }
     .meta {
-      font-size: 0.8rem;
-      color: #666;
-      margin-bottom: 5px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.55rem;
+    }
+    .empty-state {
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px dashed var(--border);
+      border-radius: 18px;
+      padding: 1.2rem;
+      text-align: center;
+      color: var(--muted);
+      box-shadow: var(--shadow);
+    }
+    .hidden {
+      display: none;
+    }
+    @media (max-width: 640px) {
+      header {
+        font-size: 1.35rem;
+      }
+      .container {
+        padding-top: 1rem;
+      }
+      .qa-card {
+        padding: 0.9rem;
+      }
     }
   </style>
 </head>
@@ -70,52 +197,216 @@
   <header>שאלות ותשובות הלכתיות</header>
 
   <div class="container">
-    <input type="text" id="searchInput" onkeyup="filterQA()" placeholder="חפש שאלה או תשובה...">
+    <div class="search-panel">
+      <label class="search-label" for="searchInput">חיפוש במאגר</label>
+      <input type="text" id="searchInput" placeholder="חפש שאלה או תשובה...">
+      <p id="resultsCount" class="results-count">טוען נתונים...</p>
+    </div>
+
+    <div class="tool-panel">
+      <div class="tool-grid">
+        <section>
+          <h2 class="panel-title">זיהוי שאלה לפי אלגוריתם</h2>
+          <p class="panel-note">הדבק כאן שאלה חופשית, והמערכת תאתר את השאלה הקרובה ביותר מתוך המאגר.</p>
+          <textarea id="questionInput" placeholder="לדוגמה: הרב האם מותר להשתמש בקומקום בשבת?"></textarea>
+          <div class="actions">
+            <button id="classifyButton" type="button">זהה שאלה</button>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="panel-title">שינוי שם קובץ לפי הזיהוי</h2>
+          <p class="panel-note">העלה קובץ, והשרת ישמור אותו בשם חדש לפי השאלה שהאלגוריתם זיהה.</p>
+          <input id="fileInput" type="file">
+          <div class="actions">
+            <button id="renameButton" type="button">העלה ושנה שם</button>
+          </div>
+        </section>
+      </div>
+
+      <div id="matchResult" class="match-result hidden"></div>
+    </div>
+
+    <div id="statusMessage" class="status-message" aria-live="polite"></div>
     <div id="qaList"></div>
+    <div id="emptyState" class="empty-state hidden">לא נמצאו תוצאות מתאימות לחיפוש.</div>
   </div>
 
   <script>
-    // Load data from Flask route /data/qa_pairs.json
-    async function loadQAData() {
-      const response = await fetch("/data/qa_pairs.json");
-      const data = await response.json();
-      const container = document.getElementById("qaList");
+    const qaList = document.getElementById("qaList");
+    const searchInput = document.getElementById("searchInput");
+    const resultsCount = document.getElementById("resultsCount");
+    const statusMessage = document.getElementById("statusMessage");
+    const emptyState = document.getElementById("emptyState");
+    const questionInput = document.getElementById("questionInput");
+    const fileInput = document.getElementById("fileInput");
+    const classifyButton = document.getElementById("classifyButton");
+    const renameButton = document.getElementById("renameButton");
+    const matchResult = document.getElementById("matchResult");
 
-      data.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "qa-card";
+    function renderCard(item) {
+      const card = document.createElement("article");
+      card.className = "qa-card";
 
-        const meta = document.createElement("div");
-        meta.className = "meta";
-        meta.innerText = `נשאל על ידי ${item["שואל"]} בתאריך ${item["זמן שאלה"]}`;
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      meta.innerText = `נשאל על ידי ${item["שואל"] || "לא ידוע"} בתאריך ${item["זמן שאלה"] || "ללא תאריך"}`;
 
-        const question = document.createElement("div");
-        question.className = "question";
-        question.innerText = item["שאלה"];
+      const question = document.createElement("div");
+      question.className = "question";
+      question.innerText = item["שאלה"] || "ללא שאלה";
 
-        const answer = document.createElement("div");
-        answer.className = "answer";
-        answer.innerText = item["תשובה"];
+      const answer = document.createElement("div");
+      answer.className = "answer";
+      answer.innerText = item["תשובה"] || "ללא תשובה";
 
-        card.appendChild(meta);
-        card.appendChild(question);
-        card.appendChild(answer);
-        container.appendChild(card);
-      });
+      card.appendChild(meta);
+      card.appendChild(question);
+      card.appendChild(answer);
+      return card;
     }
 
-    function filterQA() {
-      var input = document.getElementById("searchInput");
-      var filter = input.value.toLowerCase();
-      var cards = document.getElementsByClassName("qa-card");
+    function updateVisibleCount() {
+      const cards = Array.from(document.getElementsByClassName("qa-card"));
+      const visibleCards = cards.filter(card => card.style.display !== "none");
 
-      for (var i = 0; i < cards.length; i++) {
-        var text = cards[i].textContent || cards[i].innerText;
-        cards[i].style.display = text.toLowerCase().includes(filter) ? "" : "none";
+      resultsCount.innerText = `מציג ${visibleCards.length} מתוך ${cards.length} רשומות`;
+      emptyState.classList.toggle("hidden", visibleCards.length !== 0);
+    }
+
+    async function loadQAData() {
+      statusMessage.innerText = "טוען נתונים...";
+
+      try {
+        const response = await fetch("/data/qa_pairs.json");
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
+        const fragment = document.createDocumentFragment();
+
+        data.forEach(item => {
+          fragment.appendChild(renderCard(item));
+        });
+
+        qaList.innerHTML = "";
+        qaList.appendChild(fragment);
+        statusMessage.innerText = "";
+        updateVisibleCount();
+      } catch (error) {
+        resultsCount.innerText = "לא נטענו רשומות";
+        statusMessage.innerText = "אירעה שגיאה בטעינת הנתונים. בדוק שהקובץ qa_pairs.json זמין.";
+        console.error(error);
       }
     }
 
-    // Load data on page load
+    function filterQA() {
+      const filter = searchInput.value.trim().toLowerCase();
+      const cards = document.getElementsByClassName("qa-card");
+
+      for (let i = 0; i < cards.length; i += 1) {
+        const text = cards[i].textContent || cards[i].innerText;
+        cards[i].style.display = text.toLowerCase().includes(filter) ? "" : "none";
+      }
+
+      updateVisibleCount();
+    }
+
+    function renderMatchResult(data, renamePayload = null) {
+      const renameSection = renamePayload
+        ? `<p><strong>שם קודם:</strong> ${renamePayload.original_filename}</p>
+           <p><strong>שם חדש:</strong> ${renamePayload.renamed_filename}</p>
+           <p><strong>מיקום שמירה:</strong> ${renamePayload.saved_path}</p>`
+        : `<p><strong>שם קובץ מוצע:</strong> ${data.suggested_filename}</p>`;
+
+      matchResult.innerHTML = `
+        <p><strong>שאלה שזוהתה:</strong> ${data.question}</p>
+        <p><strong>תשובה תואמת:</strong> ${data.answer || "ללא תשובה"}</p>
+        <p><strong>רמת התאמה:</strong> ${data.score}</p>
+        ${renameSection}
+      `;
+      matchResult.classList.remove("hidden");
+    }
+
+    async function classifyQuestion() {
+      const text = questionInput.value.trim();
+      if (!text) {
+        statusMessage.innerText = "יש להזין שאלה לפני הזיהוי.";
+        matchResult.classList.add("hidden");
+        return null;
+      }
+
+      classifyButton.disabled = true;
+      statusMessage.innerText = "מזהה את השאלה...";
+
+      try {
+        const response = await fetch("/api/match-question", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text })
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "שגיאה בזיהוי השאלה.");
+        }
+
+        renderMatchResult(data);
+        statusMessage.innerText = "הזיהוי הושלם.";
+        return data;
+      } catch (error) {
+        statusMessage.innerText = error.message;
+        matchResult.classList.add("hidden");
+        return null;
+      } finally {
+        classifyButton.disabled = false;
+      }
+    }
+
+    async function renameUploadedFile() {
+      const text = questionInput.value.trim();
+      const file = fileInput.files[0];
+
+      if (!text) {
+        statusMessage.innerText = "יש להזין שאלה כדי לשנות את שם הקובץ.";
+        return;
+      }
+      if (!file) {
+        statusMessage.innerText = "יש לבחור קובץ להעלאה.";
+        return;
+      }
+
+      renameButton.disabled = true;
+      statusMessage.innerText = "מעלה קובץ ומשנה שם...";
+
+      try {
+        const formData = new FormData();
+        formData.append("text", text);
+        formData.append("file", file);
+
+        const response = await fetch("/api/rename-file", {
+          method: "POST",
+          body: formData
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "שגיאה בשינוי שם הקובץ.");
+        }
+
+        renderMatchResult(data.match, data);
+        statusMessage.innerText = "הקובץ נשמר בשם החדש.";
+      } catch (error) {
+        statusMessage.innerText = error.message;
+      } finally {
+        renameButton.disabled = false;
+      }
+    }
+
+    searchInput.addEventListener("input", filterQA);
+    classifyButton.addEventListener("click", classifyQuestion);
+    renameButton.addEventListener("click", renameUploadedFile);
     loadQAData();
   </script>
 </body>

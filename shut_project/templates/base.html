@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}שאלות ותשובות הלכתיות{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <h1>מנוע שו"ת</h1>
+      <p>זיהוי התאמות, שרשורי המשך, ניהול תיקונים ונושאים הלכתיים</p>
+    </div>
+    <nav class="site-nav">
+      <a href="{{ url_for('public.index') }}">חיפוש</a>
+      <a href="{{ url_for('admin.admin_dashboard') }}">אדמין</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

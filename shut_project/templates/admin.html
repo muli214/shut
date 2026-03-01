@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}אדמין{% endblock %}
+
+{% block content %}
+<section class="panel">
+  <div class="row split">
+    <div>
+      <h2>בקרת איכות</h2>
+      <p class="muted">כאן רואים התאמות חשודות, דיווחי משתמשים, ומגדירים תשובה חלופית או הערת אדמין.</p>
+    </div>
+    <form method="post" action="{{ url_for('admin.admin_logout') }}">
+      <button type="submit" class="button button-secondary">התנתק</button>
+    </form>
+  </div>
+  <div id="adminWarning" class="status warning hidden"></div>
+</section>
+
+<section class="panel">
+  <h2>דיווחי משתמשים</h2>
+  <div id="feedbackList" class="records-list"></div>
+</section>
+
+<section class="panel">
+  <h2>רשומות לבדיקה</h2>
+  <div id="reviewList" class="records-list"></div>
+</section>
+
+<script src="{{ url_for('static', filename='js/admin.js') }}" defer></script>
+{% endblock %}

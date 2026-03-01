@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}כניסת אדמין{% endblock %}
+
+{% block content %}
+<section class="panel narrow">
+  <h2>כניסת אדמין</h2>
+  {% if error %}
+  <p class="status error">{{ error }}</p>
+  {% endif %}
+  <form method="post" action="{{ url_for('admin.admin_login') }}" class="form">
+    <label>שם משתמש</label>
+    <input type="text" name="username" class="input">
+    <label>סיסמה</label>
+    <input type="password" name="password" class="input">
+    <button type="submit" class="button">התחבר</button>
+  </form>
+</section>
+{% endblock %}

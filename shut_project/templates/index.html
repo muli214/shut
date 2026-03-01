@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}מנוע שו"ת{% endblock %}
+
+{% block content %}
+<section class="panel">
+  <h2>זיהוי שאלה</h2>
+  <p class="muted">המערכת מחזירה תשובה מובילה, חלופות, שרשור המשך, טווח זמנים בין שאלה לתשובה, ונושא הלכתי.</p>
+  <textarea id="questionInput" class="textarea" placeholder="הדבק שאלה חופשית..."></textarea>
+  <div class="row actions">
+    <select id="optionsLimit" class="select">
+      <option value="3">3 אפשרויות</option>
+      <option value="5" selected>5 אפשרויות</option>
+      <option value="8">8 אפשרויות</option>
+      <option value="10">10 אפשרויות</option>
+    </select>
+    <button id="matchButton" class="button">זהה</button>
+  </div>
+  <div id="statusMessage" class="status"></div>
+</section>
+
+<section class="panel stats-panel">
+  <div id="topicSummary" class="chips"></div>
+</section>
+
+<section id="matchPanel" class="panel hidden">
+  <h2>תוצאה</h2>
+  <div id="matchResult"></div>
+  <div class="actions">
+    <button id="reportButton" class="button button-secondary">נראה לי שהתשובה לא מתאימה</button>
+  </div>
+  <textarea id="feedbackReason" class="textarea compact hidden" placeholder="מה לא מתאים כאן?"></textarea>
+  <div class="actions hidden" id="feedbackActions">
+    <button id="sendFeedbackButton" class="button">שלח דיווח</button>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="row split">
+    <h2>מאגר</h2>
+    <select id="topicFilter" class="select">
+      <option value="">כל הנושאים</option>
+    </select>
+  </div>
+  <div id="recordsList" class="records-list"></div>
+</section>
+
+<script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+{% endblock %}
