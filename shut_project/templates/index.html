@@ -3,11 +3,41 @@
 {% block title %}מנוע שו"ת{% endblock %}
 
 {% block content %}
-<section class="panel">
-  <h2>זיהוי שאלה</h2>
-  <p class="muted">המערכת מחזירה תשובה מובילה, חלופות, שרשור המשך, טווח זמנים בין שאלה לתשובה, ונושא הלכתי.</p>
-  <textarea id="questionInput" class="textarea" placeholder="הדבק שאלה חופשית..."></textarea>
-  <div class="row actions">
+<section class="hero-panel reveal">
+  <div class="hero-copy">
+    <span class="eyebrow">Shut Flow</span>
+    <h1>שאל שאלה וקבל מסלול תשובות ברור, צבעוני וחי.</h1>
+    <p class="hero-text">המנוע מחפש שאלה מתאימה, מציג כמה תשובות אפשריות לפי תשובות הרב, ומראה את המשך השיחה צעד אחרי צעד כדי להבין הקשר אמיתי.</p>
+    <div class="hero-highlights">
+      <div class="highlight-chip">התאמה מדויקת יותר</div>
+      <div class="highlight-chip">כמה תשובות אפשריות</div>
+      <div class="highlight-chip">שאלות בהמשכים</div>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <article class="stat-card">
+      <span class="stat-label">Answer Paths</span>
+      <strong>כמה כיווני מענה</strong>
+      <p>לא רק תשובה אחת, אלא גם חלופות קרובות כדי לבחור את המענה שהכי דומה למה שחיפשת.</p>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Conversation View</span>
+      <strong>רצף שיחה מלא</strong>
+      <p>אפשר לראות מה בא לפני ומה בא אחרי, ולא רק תשובה מנותקת מהדיון.</p>
+    </article>
+  </div>
+</section>
+
+<section class="panel search-panel reveal">
+  <div class="panel-heading">
+    <div>
+      <span class="eyebrow">Ask The Rabbi</span>
+      <h2>חיפוש שאלה</h2>
+    </div>
+    <p class="muted">כתוב שאלה חופשית. המערכת תחזיר תשובה מרכזית, עוד תשובות אפשריות, והמשך שיחה אם יש.</p>
+  </div>
+  <textarea id="questionInput" class="textarea search-input" placeholder="הדבק שאלה חופשית..."></textarea>
+  <div class="row actions search-actions">
     <select id="optionsLimit" class="select">
       <option value="3">3 אפשרויות</option>
       <option value="5" selected>5 אפשרויות</option>
@@ -16,15 +46,26 @@
     </select>
     <button id="matchButton" class="button">זהה</button>
   </div>
-  <div id="statusMessage" class="status"></div>
+  <div id="statusMessage" class="status live-status"></div>
 </section>
 
-<section class="panel stats-panel">
+<section class="panel stats-panel reveal">
+  <div class="panel-heading compact-heading">
+    <div>
+      <span class="eyebrow">Topics</span>
+      <h2>מפת נושאים</h2>
+    </div>
+  </div>
   <div id="topicSummary" class="chips"></div>
 </section>
 
-<section id="matchPanel" class="panel hidden">
-  <h2>תוצאה</h2>
+<section id="matchPanel" class="panel match-panel hidden reveal">
+  <div class="panel-heading compact-heading">
+    <div>
+      <span class="eyebrow">Result Journey</span>
+      <h2>מסלול תשובה</h2>
+    </div>
+  </div>
   <div id="matchResult"></div>
   <div class="actions">
     <button id="reportButton" class="button button-secondary">נראה לי שהתשובה לא מתאימה</button>
@@ -35,10 +76,15 @@
   </div>
 </section>
 
-<section class="panel">
+<section class="panel reveal">
   <div class="row split">
-    <h2>מאגר</h2>
-    <select id="topicFilter" class="select">
+    <div class="panel-heading compact-heading">
+      <div>
+        <span class="eyebrow">Knowledge Base</span>
+        <h2>מאגר</h2>
+      </div>
+    </div>
+    <select id="topicFilter" class="select filter-select">
       <option value="">כל הנושאים</option>
     </select>
   </div>

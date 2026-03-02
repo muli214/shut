@@ -1,28 +1,50 @@
 {% extends "base.html" %}
 
 {% block title %}אדמין{% endblock %}
+{% block body_class %}theme-admin{% endblock %}
 
 {% block content %}
-<section class="panel">
-  <div class="row split">
-    <div>
-      <h2>בקרת איכות</h2>
-      <p class="muted">כאן רואים התאמות חשודות, דיווחי משתמשים, ומגדירים תשובה חלופית או הערת אדמין.</p>
-    </div>
-    <form method="post" action="{{ url_for('admin.admin_logout') }}">
-      <button type="submit" class="button button-secondary">התנתק</button>
-    </form>
+<section class="hero-panel reveal admin-hero">
+  <div class="hero-copy">
+    <span class="eyebrow">Admin Control</span>
+    <h1>בקרת איכות וניהול החלטות במסך אחד.</h1>
+    <p class="hero-text">כאן רואים התאמות חשודות, דיווחי משתמשים, סטטוס טיפול ותשובות חלופיות, עם צפיפות מידע גבוהה אבל קריאה.</p>
   </div>
+  <div class="hero-stats">
+    <article class="stat-card">
+      <span class="stat-label">Moderation</span>
+      <strong>Fast Review</strong>
+      <p>מעבר מהיר על רשומות חשודות והוספת הערות או תשובה מתוקנת.</p>
+    </article>
+    <article class="stat-card stat-card-action">
+      <form method="post" action="{{ url_for('admin.admin_logout') }}">
+        <button type="submit" class="button button-secondary full-width">התנתק</button>
+      </form>
+    </article>
+  </div>
+</section>
+
+<section class="panel reveal">
   <div id="adminWarning" class="status warning hidden"></div>
 </section>
 
-<section class="panel">
-  <h2>דיווחי משתמשים</h2>
+<section class="panel reveal">
+  <div class="panel-heading compact-heading">
+    <div>
+      <span class="eyebrow">User Reports</span>
+      <h2>דיווחי משתמשים</h2>
+    </div>
+  </div>
   <div id="feedbackList" class="records-list"></div>
 </section>
 
-<section class="panel">
-  <h2>רשומות לבדיקה</h2>
+<section class="panel reveal">
+  <div class="panel-heading compact-heading">
+    <div>
+      <span class="eyebrow">Suspicious Matches</span>
+      <h2>רשומות לבדיקה</h2>
+    </div>
+  </div>
   <div id="reviewList" class="records-list"></div>
 </section>
 

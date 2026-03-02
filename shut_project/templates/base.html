@@ -2,24 +2,40 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>{% block title %}שאלות ותשובות הלכתיות{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
 </head>
-<body>
+<body class="{% block body_class %}theme-public{% endblock %}">
+  <div class="page-backdrop" aria-hidden="true">
+    <span class="orb orb-one"></span>
+    <span class="orb orb-two"></span>
+    <span class="orb orb-three"></span>
+    <span class="grid-glow"></span>
+  </div>
+
   <header class="site-header">
-    <div>
-      <h1>מנוע שו"ת</h1>
-      <p>זיהוי התאמות, שרשורי המשך, ניהול תיקונים ונושאים הלכתיים</p>
+    <div class="header-shell">
+      <a href="{{ url_for('public.index') }}" class="brand-mark">
+        <span class="brand-icon">ש</span>
+        <span class="brand-copy">
+          <strong>SHUT</strong>
+          <small>Halachic Intelligence</small>
+        </span>
+      </a>
+      <nav class="site-nav">
+        <a href="{{ url_for('public.index') }}">חיפוש</a>
+        <a href="{{ url_for('admin.admin_dashboard') }}">אדמין</a>
+      </nav>
     </div>
-    <nav class="site-nav">
-      <a href="{{ url_for('public.index') }}">חיפוש</a>
-      <a href="{{ url_for('admin.admin_dashboard') }}">אדמין</a>
-    </nav>
   </header>
 
   <main class="page-shell">
     {% block content %}{% endblock %}
   </main>
+
+  <footer class="site-footer">
+    <p>ממשק חיפוש, בקרה והצלבת תשובות עם חוויית מוצר אחידה ומהירה.</p>
+  </footer>
 </body>
 </html>

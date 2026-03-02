@@ -27,6 +27,8 @@ def get_review_map(record_ids: list[str]) -> dict[str, dict]:
 
 def apply_review(match: dict, review_map: dict[str, dict]) -> dict:
     review = review_map.get(match["record_id"])
+    if review and review.get("override_question"):
+        match["question"] = review["override_question"]
     if review and review.get("override_answer"):
         match["answer"] = review["override_answer"]
         match["review_status"] = review["status"]
@@ -63,6 +65,8 @@ def api_records():
 
     for record in records:
         review = review_map.get(record["record_id"])
+        if review and review.get("override_question"):
+            record["question"] = review["override_question"]
         if review and review.get("override_answer"):
             record["answer"] = review["override_answer"]
             record["review_status"] = review["status"]
@@ -108,11 +112,29 @@ def api_match_question():
 
     review_map = get_review_map([match["record_id"] for match in matches])
     matches = [apply_review(match, review_map) for match in matches]
+    answer_options = get_engine().answer_options(matches, limit=limit)
+    verification = get_engine().verify_match(query_text, answer_options)
 
-    best_match = matches[0]
-    best_match["alternatives"] = matches[1:]
-    best_match["total_options"] = len(matches)
-    best_match["thread"] = get_engine().get_thread(best_match["thread_id"])
+    best_match = answer_options[0]
+    best_match["alternatives"] = answer_options[1:]
+    best_match["total_options"] = len(answer_options)
+    best_match["raw_match_count"] = len(matches)
+    best_match["verification"] = verification
+    thread = get_engine().get_thread(best_match["thread_id"], focus_record_id=best_match["record_id"])
+    if thread:
+        thread_record_ids = [item["record_id"] for item in thread["items"]]
+        thread_review_map = get_review_map(thread_record_ids)
+        for item in thread["items"]:
+            reviewed_item = apply_review(item, thread_review_map)
+            item.update(reviewed_item)
+    best_match["thread"] = thread
+    context_window = get_engine().context_window(best_match["record_id"])
+    if context_window:
+        context_review_map = get_review_map([item["record_id"] for item in context_window])
+        for item in context_window:
+            reviewed_item = apply_review(item, context_review_map)
+            item.update(reviewed_item)
+    best_match["context_window"] = context_window
     return jsonify(best_match)
 
 

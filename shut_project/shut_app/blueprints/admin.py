@@ -75,8 +75,13 @@ def api_admin_dashboard():
     suspicious = []
     for record in engine.list_records(only_suspicious=True)[:limit]:
         review = reviews.get(record["record_id"])
+        if review and review.get("override_question"):
+            record["question"] = review["override_question"]
         if review and review.get("override_answer"):
             record["answer"] = review["override_answer"]
+            record["review_status"] = review["status"]
+            record["admin_notes"] = review["admin_notes"]
+        elif review:
             record["review_status"] = review["status"]
             record["admin_notes"] = review["admin_notes"]
         if include_alternatives:

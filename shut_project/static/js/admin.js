@@ -2,6 +2,12 @@ const feedbackList = document.getElementById("feedbackList");
 const reviewList = document.getElementById("reviewList");
 const adminWarning = document.getElementById("adminWarning");
 
+function flashBanner(message, state = "warning") {
+  adminWarning.textContent = message;
+  adminWarning.className = `status ${state} reveal`;
+  adminWarning.classList.remove("hidden");
+}
+
 function escapeHtml(text) {
   return (text || "")
     .replaceAll("&", "&amp;")
@@ -32,13 +38,13 @@ function reviewCard(record) {
       ` : ""}
       <div class="review-editor">
         <select id="status-${record.record_id}" class="select">
-          <option value="pending">ממתין</option>
-          <option value="approved">מאושר</option>
-          <option value="fixed">תוקן</option>
-          <option value="rejected">נדחה</option>
+          <option value="pending" ${record.review_status === "pending" ? "selected" : ""}>ממתין</option>
+          <option value="approved" ${record.review_status === "approved" ? "selected" : ""}>מאושר</option>
+          <option value="fixed" ${record.review_status === "fixed" ? "selected" : ""}>תוקן</option>
+          <option value="rejected" ${record.review_status === "rejected" ? "selected" : ""}>נדחה</option>
         </select>
         <textarea id="answer-${record.record_id}" class="textarea compact" placeholder="תשובה חלופית">${escapeHtml(record.answer || "")}</textarea>
-        <textarea id="notes-${record.record_id}" class="textarea compact" placeholder="הערת אדמין"></textarea>
+        <textarea id="notes-${record.record_id}" class="textarea compact" placeholder="הערת אדמין">${escapeHtml(record.admin_notes || "")}</textarea>
         <button class="button" data-record-id="${record.record_id}">שמור</button>
       </div>
     </article>
@@ -63,14 +69,14 @@ async function loadDashboard() {
   const response = await fetch("/api/admin/dashboard");
   const data = await response.json();
   if (!response.ok) {
-    adminWarning.textContent = data.error || "שגיאה בטעינת דשבורד.";
-    adminWarning.classList.remove("hidden");
+    flashBanner(data.error || "שגיאה בטעינת דשבורד.");
     return;
   }
 
   if (data.admin_default_password) {
-    adminWarning.textContent = "סיסמת האדמין עדיין ברירת מחדל. עדכן SHUT_ADMIN_PASSWORD.";
-    adminWarning.classList.remove("hidden");
+    flashBanner("סיסמת האדמין עדיין ברירת מחדל. עדכן SHUT_ADMIN_PASSWORD.");
+  } else {
+    adminWarning.classList.add("hidden");
   }
 
   feedbackList.innerHTML = data.feedback.map(feedbackCard).join("") || "<p class='muted'>אין דיווחים.</p>";
@@ -85,7 +91,7 @@ document.addEventListener("click", async (event) => {
     const overrideAnswer = document.getElementById(`answer-${recordId}`).value;
     const adminNotes = document.getElementById(`notes-${recordId}`).value;
 
-    await fetch(`/api/admin/review/${recordId}`, {
+    const response = await fetch(`/api/admin/review/${recordId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -94,17 +100,19 @@ document.addEventListener("click", async (event) => {
         admin_notes: adminNotes
       })
     });
+    flashBanner(response.ok ? "הרשומה נשמרה." : "שמירת הרשומה נכשלה.", response.ok ? "warning" : "error");
     loadDashboard();
     return;
   }
 
   const feedbackButton = event.target.closest("[data-feedback-id]");
   if (feedbackButton) {
-    await fetch(`/api/admin/feedback/${feedbackButton.dataset.feedbackId}`, {
+    const response = await fetch(`/api/admin/feedback/${feedbackButton.dataset.feedbackId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: feedbackButton.dataset.feedbackStatus })
     });
+    flashBanner(response.ok ? "סטטוס הדיווח עודכן." : "עדכון סטטוס הדיווח נכשל.", response.ok ? "warning" : "error");
     loadDashboard();
   }
 });
